@@ -45,6 +45,10 @@ body {
     height: 400px;
 }
 
+.mapboxgl-popup {
+    max-width: 400px;
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
 
 .sidebar {
     background-color: rgba(35, 55, 75, 0.9);

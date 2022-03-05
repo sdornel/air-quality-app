@@ -20,40 +20,6 @@ const mobilegenendpoint = 'https://u50g7n0cbj.execute-api.us-east-1.amazonaws.co
 
 const MapOfUsa = (props) => {
         // console.log('props', props);
-        const options = [
-        {
-          name: 'Population',
-          description: 'Estimated total population',
-          property: 'pop_est',
-          stops: [
-            [0, '#f8d5cc'],
-            [1000000, '#f4bfb6'],
-            [5000000, '#f1a8a5'],
-            [10000000, '#ee8f9a'],
-            [50000000, '#ec739b'],
-            [100000000, '#dd5ca8'],
-            [250000000, '#c44cc0'],
-            [500000000, '#9f43d7'],
-            [1000000000, '#6e40e6']
-          ]
-        },
-        {
-          name: 'GDP',
-          description: 'Estimate total GDP in millions of dollars',
-          property: 'gdp_md_est',
-          stops: [
-            [0, '#f8d5cc'],
-            [1000, '#f4bfb6'],
-            [5000, '#f1a8a5'],
-            [10000, '#ee8f9a'],
-            [50000, '#ec739b'],
-            [100000, '#dd5ca8'],
-            [250000, '#c44cc0'],
-            [5000000, '#9f43d7'],
-            [10000000, '#6e40e6']
-          ]
-        }
-    ];
     
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -85,15 +51,33 @@ const MapOfUsa = (props) => {
         // });
         map.current.on('load', () => {
             // Add an image to use as a custom marker
-            map.current.loadImage(
-                'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
-                (error, image) => {
-                    if (error) throw error;
-                    map.current.addImage('custom-marker', image);
+            // map.current.loadImage(
+                // 'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+                // (error, image) => {
+                    // console.log('error', error);
+                    // if (error) throw error;
+                    // map.current.addImage('custom-marker', image);
                     // Add a GeoJSON source with 2 points
 
+                    console.log('props.airQualityData.current', props.airQualityData.current);
                     const features = []
-                    for (let i = 0; i < props.coordinates.current.length; i++) {
+                    for (let i = 0; i < props.airQualityData.current.length; i++) {
+                        // debugger
+                        let entityImage;
+                        // eslint-disable-next-line default-case
+                        switch(props.airQualityData.current[i].entity) {
+                            case 'government':
+                                entityImage = 'museum-15';
+                                break;
+                            case 'community':
+                                entityImage = 'theatre-15';
+                                break;
+                            case 'research':
+                                entityImage = 'rocket-15';
+                                break;
+                        }
+                        console.log(props.airQualityData.current[i])
+                        // debugger
                         features.push(
                             {
                                 // feature for Mapbox DC
@@ -101,11 +85,24 @@ const MapOfUsa = (props) => {
                                 'geometry': {
                                     'type': 'Point',
                                     'coordinates': [
-                                        props.airQualityData.current[i].coordinates.longitude, props.airQualityData.current[i].coordinates.latitude
+                                        props.airQualityData.current[i].coordinates?.longitude, props.airQualityData.current[i].coordinates?.latitude
                                     ]
                                 },
                                 'properties': {
-                                    'title': `${props.airQualityData.current[i].location}`
+                                    'title': `${props.airQualityData.current[i].entity}`,
+                                    'description': `
+                                        <div>
+                                            <strong>${props.airQualityData.current[i].entity}</strong>
+                                            <div>
+                                                <p>City: ${props.airQualityData.current[i].city}<p/>
+                                                <p>Location: ${props.airQualityData.current[i].name}<p/>
+                                                <p>Sensor Type: ${props.airQualityData.current[i].sensorType}<p/>
+                                                <p>Coordinates: ${props.airQualityData.current[i].coordinates?.longitude} - ${props.airQualityData.current[i].coordinates?.latitude}<p/>
+                                                <p>First Updated: ${props.airQualityData.current[i].firstUpdated}<p/>
+                                                <p>Last Updated: ${props.airQualityData.current[i].lastUpdated}<p/>
+                                            </div>
+                                        </div>`,
+                                    'icon': `${entityImage}`
                                 }
                             },
                         )
@@ -117,27 +114,75 @@ const MapOfUsa = (props) => {
                             'features': features,
                         }
                     });
-
-                    // Add a symbol layer
-                    map.current.addLayer({
-                        'id': 'points',
-                        'type': 'symbol',
-                        'source': 'points',
-                        'layout': {
-                        'icon-image': 'custom-marker',
-                        // get the title name from the source's "title" property
-                        'text-field': ['get', 'title'],
-                        'text-font': [
-                            'Open Sans Semibold',
-                            'Arial Unicode MS Bold'
-                        ],
-                        'text-offset': [0, 1.25],
-                        'text-anchor': 'top'
+                    map.current.addSource('places', {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'FeatureCollection',
+                            'features': features,
                         }
                     });
-                }
-            );              
-        })
+
+                    // // Add a symbol layer
+                    // map.current.addLayer({
+                    //     'id': 'points',
+                    //     'type': 'symbol',
+                    //     'source': 'points',
+                    //     'layout': {
+                    //     // 'icon-image': 'custom-marker',
+                    //     'icon-image': '{icon}',
+                    //     // get the title name from the source's "title" property
+                    //     'text-field': ['get', 'title'],
+                    //     'text-font': [
+                    //         'Open Sans Semibold',
+                    //         'Arial Unicode MS Bold'
+                    //     ],
+                    //     'text-offset': [0, 1.25],
+                    //     'text-anchor': 'top'
+                    //     }
+                    // });
+                    // Add a layer showing the places.
+                    map.current.addLayer({
+                        'id': 'places',
+                        'type': 'symbol',
+                        'source': 'places',
+                        'layout': {
+                        'icon-image': '{icon}',
+                        'icon-allow-overlap': true
+                        }
+                    });
+
+                    // When a click event occurs on a feature in the places layer, open a popup at the
+                    // location of the feature, with description HTML from its properties.
+                    map.current.on('click', 'places', (e) => {
+                        // Copy coordinates array.
+                        const coordinates = e.features[0].geometry.coordinates.slice();
+                        const description = e.features[0].properties.description;
+                        
+                        // Ensure that if the map is zoomed out such that multiple
+                        // copies of the feature are visible, the popup appears
+                        // over the copy being pointed to.
+                        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                        }
+                        
+                        new mapboxgl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(description)
+                        // .addTo(map);
+                        .addTo(map.current);
+                        });
+                    // });     
+                    
+            // Change the cursor to a pointer when the mouse is over the places layer.
+            map.current.on('mouseenter', 'places', () => {
+                map.current.getCanvas().style.cursor = 'pointer';
+            });
+            
+            // Change it back to a pointer when it leaves.
+            map.current.on('mouseleave', 'places', () => {
+                map.current.getCanvas().style.cursor = '';
+            });
+        });
     });
 
     return (
