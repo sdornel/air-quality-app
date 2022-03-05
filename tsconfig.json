@@ -28,5 +28,5 @@
     ],
     "include": [
       "./src/**/*.tsx"
-, "src/main-weather-display/world-map/map-of-usa.js"    ]
+, "src/main-weather-display/world-map/map-of-usa.js", "src/enum/enums.ts"    ]
   }
