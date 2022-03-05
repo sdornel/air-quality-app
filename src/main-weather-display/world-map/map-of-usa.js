@@ -68,12 +68,10 @@ const MapOfUsa = (props) => {
         if (map.current) {
             return;
         } // initialize map only once
-        // debugger
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/light-v10',
             center: [lng, lat],
-            // center: [lat, lng],
             zoom: zoom,
             // load: {
             //     loadImage: {}
@@ -85,7 +83,6 @@ const MapOfUsa = (props) => {
         //     center: [lng, lat],
         //     zoom: zoom
         // });
-        // debugger
         map.current.on('load', () => {
             // Add an image to use as a custom marker
             map.current.loadImage(
@@ -104,49 +101,20 @@ const MapOfUsa = (props) => {
                                 'geometry': {
                                     'type': 'Point',
                                     'coordinates': [
-                                        props.coordinates.current[i][1], props.coordinates.current[i][0]
+                                        props.airQualityData.current[i].coordinates.longitude, props.airQualityData.current[i].coordinates.latitude
                                     ]
                                 },
                                 'properties': {
-                                    'title': `Location ${i}`
+                                    'title': `${props.airQualityData.current[i].location}`
                                 }
                             },
                         )
                     }
-                    // console.log('features', features[0]);
                     map.current.addSource('points', {
                         'type': 'geojson',
                         'data': {
                             'type': 'FeatureCollection',
                             'features': features,
-                            // 'features': [
-                            //     {
-                            //         // feature for Mapbox DC
-                            //         'type': 'Feature',
-                            //         'geometry': {
-                            //             'type': 'Point',
-                            //             // 'coordinates': props.coordinates.current,
-                            //             'coordinates': [
-                            //                 -76.53063297271729, 39.18174077994108
-                            //                 // -94.57055, 39.10465
-                            //             ]
-                            //         },
-                            //         'properties': {
-                            //             'title': 'Mapbox DC'
-                            //         }
-                            //     },
-                            //     {
-                            //         // feature for Mapbox SF
-                            //         'type': 'Feature',
-                            //         'geometry': {
-                            //             'type': 'Point',
-                            //             'coordinates': [-122.414, 37.776]
-                            //         },
-                            //         'properties': {
-                            //             'title': 'Mapbox SF'
-                            //         }
-                            //     }
-                            // ]
                         }
                     });
 
@@ -172,17 +140,6 @@ const MapOfUsa = (props) => {
         })
     });
 
-    // useEffect(() => {
-    //     // console.log('map', map);
-    //     if (!map.current) return; // wait for map to initialize
-    //     map.current.on('move', () => {
-    //         setLng(map.current.getCenter().lng.toFixed(4));
-    //         setLat(map.current.getCenter().lat.toFixed(4));
-    //         setZoom(map.current.getZoom().toFixed(2));
-    //     });
-    // });
-
-    // console.log('got here');
     return (
         <div className="world-map">
             <div className="sidebar">

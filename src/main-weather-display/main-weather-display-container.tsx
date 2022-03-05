@@ -8,6 +8,7 @@ const MainWeatherDisplayContainer = () => {
   const fetchLocationDataForUs = 'https://docs.openaq.org/v2/latest?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&sensorType=reference%20grade&dumpRaw=false';
   const [data, setState] = useState([]);
   const coordinates = useRef({});
+  const airQualityData = useRef({});
     // componentDidMount() {
 
     // }
@@ -32,12 +33,14 @@ const MainWeatherDisplayContainer = () => {
       // const coordinates = [];
       // console.log(data.results[0].coordinates);
       const coordinatesArray = [];
+      const airQualityDataArray = [];
       for (let i = 0; i < data.results.length; i++) {
         coordinatesArray.push(Object.values(data.results[i].coordinates));
-        // coordinatesArray.push(data.results[i].coordinates);
+        airQualityDataArray.push(data.results[i]);
       }
       // console.log('coordinatesArray', coordinatesArray);
       coordinates.current = coordinatesArray;
+      airQualityData.current = airQualityDataArray;
       // debugger
       // coordinates.current = [];
     });
@@ -47,10 +50,7 @@ const MainWeatherDisplayContainer = () => {
     <div className="App">
       <h1>Main Weather Display</h1>
       {/* {console.log('data', data)} */}
-      <MapOfUsa coordinates={coordinates}/>
-      {/* <div ref={MapOfUsa} className="map-container" /> */}
-
-
+      <MapOfUsa coordinates={coordinates} airQualityData={airQualityData}/>
     </div>
   );
 }
