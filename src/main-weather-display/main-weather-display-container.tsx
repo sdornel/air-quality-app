@@ -1,56 +1,114 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-// import '../App.css';
+import Toggle from './toggle/toggle';
+import { ButtonType } from '../enum/enums'
 import MapOfUsa from './world-map/map-of-usa';
 
 const MainWeatherDisplayContainer = () => {
-  const fetchLocationDataForUs = 'https://docs.openaq.org/v2/latest?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&sensorType=reference%20grade&dumpRaw=false';
-  const [data, setState] = useState([]);
-  const coordinates = useRef({});
+  let fetchLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=community&entity=government&entity=research&dumpRaw=false';
+  const fetchCommunityLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=community&dumpRaw=false';
+  const fetchGovernmentLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=government&dumpRaw=false';
+  const fetchResearchLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=research&dumpRaw=false';
   const airQualityData = useRef({});
-    // componentDidMount() {
+  const [communityButton, selectedCommunity] = useState(false);
+  const [governmentButton, selectedGovernment] = useState(false);
+  const [researchButton, selectedResearch] = useState(false);
+  useEffect(() => {
+    // fetchCommunityLocationData();
+    // fetchGovernmentLocationData();
+    // fetchResearchLocationData();
 
-    // }
-  useEffect((): void => {
-    fetchLocationData();
-    // fetchTileData();
-    // 'https://docs.openaq.org/v2/locations/tiles/viewer'
-    // fetch('https://docs.openaq.org/v2/locations/tiles/tiles.json')
-    // .then(res => res.json())
-    // .then(data => {
-    //   console.log('data1', data);
-    // })
-  }, []);
+    
+  
+    const fetchData = async () => {
+      // console.log(await fetchCommunityLocationData())
+      const cData = await fetch(fetchCommunityLocationDataForUSA);
+      const cJson = await cData.json();
+      // airQualityData.current = cJson;
 
-  const fetchLocationData = (): void => {
-    fetch(fetchLocationDataForUs)
+      const gData = await fetch(fetchGovernmentLocationDataForUSA);
+      const gJson = await gData.json();
+
+      const rData = await fetch(fetchResearchLocationDataForUSA);
+      const rJson = await rData.json();
+
+      airQualityData.current = [...cJson.results, ...gJson.results, ...rJson.results];
+    }
+
+    fetchData();
+  }, [airQualityData.current]);
+
+  const fetchCommunityLocationData = async () => {
+    let airQualityDataArray: any = [];
+    fetch(fetchCommunityLocationDataForUSA)
     .then(res => res.json())
     .then(data => {
-      setState(data);
-      console.log('data2', data);
-      // if i had more control of the api i would make a get request to only retrieve an array of coordinates
-      // const coordinates = [];
-      // console.log(data.results[0].coordinates);
-      const coordinatesArray = [];
-      const airQualityDataArray = [];
+      console.log('data', data);
+      // const airQualityDataArray: any = [];
       for (let i = 0; i < data.results.length; i++) {
-        coordinatesArray.push(Object.values(data.results[i].coordinates));
         airQualityDataArray.push(data.results[i]);
       }
-      // console.log('coordinatesArray', coordinatesArray);
-      coordinates.current = coordinatesArray;
-      airQualityData.current = airQualityDataArray;
-      // debugger
-      // coordinates.current = [];
+      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
+      return airQualityDataArray;
     });
+    // debugger
+    return await airQualityDataArray;
   };
+
+  const fetchGovernmentLocationData = async () => {
+    let airQualityDataArray: any = [];
+    fetch(fetchGovernmentLocationDataForUSA)
+    .then(res => res.json())
+    .then(data => {
+      const airQualityDataArray: any = [];
+      // setState(data);
+      for (let i = 0; i < data.results.length; i++) {
+        airQualityDataArray.push(data.results[i]);
+      }
+      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
+      return airQualityDataArray;
+    });
+    return await airQualityDataArray;
+  };
+
+  const fetchResearchLocationData = async () => {
+    let airQualityDataArray: any = [];
+    fetch(fetchResearchLocationDataForUSA)
+    .then(res => res.json())
+    .then(data => {
+      const airQualityDataArray: any = [];
+      // setState(data);
+      for (let i = 0; i < data.results.length; i++) {
+        airQualityDataArray.push(data.results[i]);
+      }
+      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
+      return airQualityDataArray;
+    });
+    return await airQualityDataArray;
+  };
+
+  const updateLocationFetchRequest = (event: ButtonType) => {
+    console.log('event', event);
+    switch (event) {
+      case ButtonType.Community:
+        // hook here
+      break;
+      case ButtonType.Government:
+
+      break;
+
+      case ButtonType.Research:
+
+      break;
+    }
+  }
 
   return (
     <div className="App">
       <h1>Main Weather Display</h1>
-      {/* {console.log('data', data)} */}
-      <MapOfUsa coordinates={coordinates} airQualityData={airQualityData}/>
+      <Toggle updateLocationFetchRequest={updateLocationFetchRequest}/>
+      <MapOfUsa airQualityData={airQualityData}/>
     </div>
   );
 }
