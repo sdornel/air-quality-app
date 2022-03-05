@@ -103,7 +103,6 @@ const MapOfUsa = (props) => {
                                 'type': 'Feature',
                                 'geometry': {
                                     'type': 'Point',
-                                    // 'coordinates': props.coordinates.current[i],
                                     'coordinates': [
                                         props.coordinates.current[i][1], props.coordinates.current[i][0]
                                     ]
@@ -173,15 +172,15 @@ const MapOfUsa = (props) => {
         })
     });
 
-    useEffect(() => {
-        // console.log('map', map);
-        if (!map.current) return; // wait for map to initialize
-        map.current.on('move', () => {
-            setLng(map.current.getCenter().lng.toFixed(4));
-            setLat(map.current.getCenter().lat.toFixed(4));
-            setZoom(map.current.getZoom().toFixed(2));
-        });
-    });
+    // useEffect(() => {
+    //     // console.log('map', map);
+    //     if (!map.current) return; // wait for map to initialize
+    //     map.current.on('move', () => {
+    //         setLng(map.current.getCenter().lng.toFixed(4));
+    //         setLat(map.current.getCenter().lat.toFixed(4));
+    //         setZoom(map.current.getZoom().toFixed(2));
+    //     });
+    // });
 
     // console.log('got here');
     return (
