@@ -1,41 +1,44 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import Toggle from './toggle/toggle';
 import { ButtonType } from '../enum/enums'
 import MapOfUsa from './world-map/map-of-usa';
 
 const MainWeatherDisplayContainer = () => {
-  let fetchLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=community&entity=government&entity=research&dumpRaw=false';
   const fetchCommunityLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=community&dumpRaw=false';
   const fetchGovernmentLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=government&dumpRaw=false';
   const fetchResearchLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=research&dumpRaw=false';
   const airQualityData = useRef({});
-  const [communityButton, selectedCommunity] = useState(false);
-  const [governmentButton, selectedGovernment] = useState(false);
-  const [researchButton, selectedResearch] = useState(false);
+  const [communityButton, selectedCommunity] = useState(true);
+  const [governmentButton, selectedGovernment] = useState(true);
+  const [researchButton, selectedResearch] = useState(true);
+
+  // const measurementDataForLocation = useRef({});
+  // const [measurementDataForLocation, setMeasurementData] = useState({});
+  const measurementDataForLocation = useState({});
   useEffect(() => {
-    // fetchCommunityLocationData();
-    // fetchGovernmentLocationData();
-    // fetchResearchLocationData();
-
-    
-  
     const fetchData = async () => {
-      // console.log(await fetchCommunityLocationData())
-      const cData = await fetch(fetchCommunityLocationDataForUSA);
-      const cJson = await cData.json();
-      // airQualityData.current = cJson;
-
-      const gData = await fetch(fetchGovernmentLocationDataForUSA);
-      const gJson = await gData.json();
-
-      const rData = await fetch(fetchResearchLocationDataForUSA);
-      const rJson = await rData.json();
-
-      airQualityData.current = [...cJson.results, ...gJson.results, ...rJson.results];
+      let cJson;
+      let gJson;
+      let rJson;
+      const results = [];
+      if (communityButton) {
+        const cData = await fetch(fetchCommunityLocationDataForUSA);
+        cJson = await cData.json();
+        results.push(...cJson.results);
+      }
+      if (governmentButton) {
+        const gData = await fetch(fetchGovernmentLocationDataForUSA);
+        gJson = await gData.json();
+        results.push(...gJson.results);
+      }
+      if (researchButton) {
+        const rData = await fetch(fetchResearchLocationDataForUSA);
+        rJson = await rData.json();
+        results.push(...rJson.results);
+      }
+      airQualityData.current = [...results]
     }
-
     fetchData();
   }, [airQualityData.current]);
 
@@ -44,8 +47,6 @@ const MainWeatherDisplayContainer = () => {
     fetch(fetchCommunityLocationDataForUSA)
     .then(res => res.json())
     .then(data => {
-      console.log('data', data);
-      // const airQualityDataArray: any = [];
       for (let i = 0; i < data.results.length; i++) {
         airQualityDataArray.push(data.results[i]);
       }
@@ -89,26 +90,45 @@ const MainWeatherDisplayContainer = () => {
   };
 
   const updateLocationFetchRequest = (event: ButtonType) => {
-    console.log('event', event);
     switch (event) {
       case ButtonType.Community:
-        // hook here
+        selectedCommunity(!communityButton);
       break;
       case ButtonType.Government:
-
+        selectedGovernment(!governmentButton);
       break;
 
       case ButtonType.Research:
-
+        selectedResearch(!researchButton);
       break;
     }
+    // console.log(communityButton, governmentButton, researchButton);
   }
+
+  // useEffect(() => {
+
+  // }, [measurementDataForLocation.current])
+
+  const getMeasurementData = async (locationId: number) => { 
+    console.log('CLICKED', locationId);
+    const getMeasurementDataForLocation = `https://docs.openaq.org/v2/measurements?date_from=2022-03-04T02%3A16%3A00%2B00%3A00&date_to=2022-03-05T02%3A16%3A00%2B00%3A00&limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&location_id=${locationId}&order_by=datetime`
+    const res = await fetch(getMeasurementDataForLocation);
+    // const data = await res.json();
+    // console.log('res', res);
+    // measurementDataForLocation.current = await res.json();
+    // setMeasurementData(await res.json());
+    const measurementData = await res.json();
+    mData.current = measurementData;
+    return measurementData;
+    // const measurementDataForLocation = useState( () => getMeasurementData(locationId) );
+  }
+
+  const mData = useRef({});
 
   return (
     <div className="App">
       <h1>Main Weather Display</h1>
-      <Toggle updateLocationFetchRequest={updateLocationFetchRequest}/>
-      <MapOfUsa airQualityData={airQualityData}/>
+      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} mData={mData}/>
     </div>
   );
 }

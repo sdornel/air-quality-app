@@ -8,7 +8,7 @@
       "outDir": "./dist",
       "noEmit": true,
       "isolatedModules": true,
-      "strict": true,
+      "strict": false,
       "moduleResolution": "node",
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
@@ -28,5 +28,5 @@
     ],
     "include": [
       "./src/**/*.tsx"
-, "src/main-weather-display/world-map/map-of-usa.js", "src/enum/enums.ts"    ]
+, "src/main-weather-display/world-map/map-of-usa.tsxx", "src/enum/enums.ts"    ]
   }

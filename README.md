@@ -12,15 +12,15 @@ Build a standalone ReactJS application, with a tool like Create React App or wit
 
 ·       Using this baseline data, the developer should choose from one of the following options to visually display this data in a comprehensible way.
 
-1.      Display this data as plots on a map and a hover over to give a summary of the data.
+1.     Display this data as plots on a map and a hover over to give a summary of the data. DONE
 
-2.     Display this data as informational cards or graphs that have tags, icons, or tooltips to represent the data.
+2.     Display this data as informational cards or graphs that have tags, icons, or tooltips to represent the data. X
 
 In Both Options:
 
-·       Visually represent what each location is [government, research, or community]. The user should also be able to filter by this attribute.
+·       Visually represent what each location is [government, research, or community]. The user should also be able to filter by this attribute. DONE
 
-·       Display a summary of each location. The more detailed the better.
+·       Display a summary of each location. The more detailed the better. DONE
 
 From the location screen, the user should be able to click a data point and navigate to view further measurement details of that location. The data for this can be found using the measurements endpoint (note that this is the v2 endpoint that we should use… please avoid the v1 endpoint).
 
