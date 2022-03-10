@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { ButtonType } from '../enum/enums'
 import MapOfUsa from './world-map/map-of-usa';
 
 const MainWeatherDisplayContainer = () => {
-  const fetchCommunityLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=community&dumpRaw=false';
-  const fetchGovernmentLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=government&dumpRaw=false';
-  const fetchResearchLocationDataForUSA = 'https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&order_by=lastUpdated&entity=research&dumpRaw=false';
+  const fetchCommunityLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
+  const fetchGovernmentLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=government&dumpRaw=false';
+  const fetchResearchLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=research&dumpRaw=false';
   const airQualityData = useRef({});
   const [communityButton, selectedCommunity] = useState(true);
   const [governmentButton, selectedGovernment] = useState(true);
@@ -23,17 +22,17 @@ const MainWeatherDisplayContainer = () => {
       let rJson;
       const results = [];
       if (communityButton) {
-        const cData = await fetch(fetchCommunityLocationDataForUSA);
+        const cData = await fetch(fetchCommunityLocationDataUrl);
         cJson = await cData.json();
         results.push(...cJson.results);
       }
       if (governmentButton) {
-        const gData = await fetch(fetchGovernmentLocationDataForUSA);
+        const gData = await fetch(fetchGovernmentLocationDataUrl);
         gJson = await gData.json();
         results.push(...gJson.results);
       }
       if (researchButton) {
-        const rData = await fetch(fetchResearchLocationDataForUSA);
+        const rData = await fetch(fetchResearchLocationDataUrl);
         rJson = await rData.json();
         results.push(...rJson.results);
       }
@@ -42,68 +41,6 @@ const MainWeatherDisplayContainer = () => {
     fetchData();
   }, [airQualityData.current]);
 
-  const fetchCommunityLocationData = async () => {
-    let airQualityDataArray: any = [];
-    fetch(fetchCommunityLocationDataForUSA)
-    .then(res => res.json())
-    .then(data => {
-      for (let i = 0; i < data.results.length; i++) {
-        airQualityDataArray.push(data.results[i]);
-      }
-      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
-      return airQualityDataArray;
-    });
-    // debugger
-    return await airQualityDataArray;
-  };
-
-  const fetchGovernmentLocationData = async () => {
-    let airQualityDataArray: any = [];
-    fetch(fetchGovernmentLocationDataForUSA)
-    .then(res => res.json())
-    .then(data => {
-      const airQualityDataArray: any = [];
-      // setState(data);
-      for (let i = 0; i < data.results.length; i++) {
-        airQualityDataArray.push(data.results[i]);
-      }
-      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
-      return airQualityDataArray;
-    });
-    return await airQualityDataArray;
-  };
-
-  const fetchResearchLocationData = async () => {
-    let airQualityDataArray: any = [];
-    fetch(fetchResearchLocationDataForUSA)
-    .then(res => res.json())
-    .then(data => {
-      const airQualityDataArray: any = [];
-      // setState(data);
-      for (let i = 0; i < data.results.length; i++) {
-        airQualityDataArray.push(data.results[i]);
-      }
-      // setAirQualityData(oldData => [...oldData, ...airQualityDataArray]);
-      return airQualityDataArray;
-    });
-    return await airQualityDataArray;
-  };
-
-  const updateLocationFetchRequest = (event: ButtonType) => {
-    switch (event) {
-      case ButtonType.Community:
-        selectedCommunity(!communityButton);
-      break;
-      case ButtonType.Government:
-        selectedGovernment(!governmentButton);
-      break;
-
-      case ButtonType.Research:
-        selectedResearch(!researchButton);
-      break;
-    }
-    // console.log(communityButton, governmentButton, researchButton);
-  }
 
   // useEffect(() => {
 
