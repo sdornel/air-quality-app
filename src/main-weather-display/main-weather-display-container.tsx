@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { useRef } from 'react';
-import { useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import MapOfUsa from './world-map/map-of-usa';
 
 const MainWeatherDisplayContainer = () => {
@@ -62,10 +61,12 @@ const MainWeatherDisplayContainer = () => {
 
   const mData = useRef({});
 
+  let navigateToMeasurements = useNavigate(); 
+
   return (
     <div className="App">
       <h1>Main Weather Display</h1>
-      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} mData={mData}/>
+      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} mData={mData} navigateToMeasurements={navigateToMeasurements} />
     </div>
   );
 }

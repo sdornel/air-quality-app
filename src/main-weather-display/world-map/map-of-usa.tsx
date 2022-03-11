@@ -8,6 +8,10 @@ import ReactDOM from 'react-dom';
 import { ChangeEvent } from 'react';
 import Checkboxes from '../../checkboxes/checkboxes';
 import { CheckboxButton } from '../../enum/enums';
+import LocationMeasurements from '../location-measurements/location-measurements';
+import { Link, Routes, Route, Router, BrowserRouter } from "react-router-dom";
+import App from '../../App';
+
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2Rvcm5lbCIsImEiOiJjbDBidTE5Z3YxMHE0M2NtbjN5ZzJkMDk1In0.kRcnZyDcmcDMs7DvPmXvGg';
 
 const MapOfUsa = (props: any) => {
@@ -18,6 +22,7 @@ const MapOfUsa = (props: any) => {
     const [lat, setLat] = useState(34);
     const [zoom, setZoom] = useState(1.5);
     const [map, setMap] = useState<mapboxgl.Map>({} as any);
+    const selectedLocationId = useRef(null);
     // Initialize map when component mounts
     useEffect(() => {
       const map: mapboxgl.Map = new mapboxgl.Map({
@@ -58,21 +63,25 @@ const MapOfUsa = (props: any) => {
                     'properties': {
                         'id': `${props.airQualityData.current[i].id}`,
                         'title': `${props.airQualityData.current[i].entity}`,
-                        'description': `
+                        'description': 
+                          // <LocationMeasurements/>
+                        `
                             <div>
                                 <strong>${props.airQualityData.current[i].entity}</strong>
-                                <div>
-                                    <button class="more-info-button" id="more-info-button">More info</button>
-                                    <p>id: ${props.airQualityData.current[i].id}</p>
-                                    <p>Country: ${props.airQualityData.current[i].country || 'N/A'}<p/>
-                                    <p>City: ${props.airQualityData.current[i].city || 'N/A'}<p/>
-                                    <p>Location: ${props.airQualityData.current[i].name || 'N/A'}<p/>
-                                    <p>Sensor Type: ${props.airQualityData.current[i].sensorType}<p/>
-                                    <p>Coordinates: ${props.airQualityData.current[i].coordinates?.longitude} - ${props.airQualityData.current[i].coordinates?.latitude}<p/>
-                                    <p>First Updated: ${props.airQualityData.current[i].firstUpdated}<p/>
-                                    <p>Last Updated: ${props.airQualityData.current[i].lastUpdated}<p/>
+                                <div className="location-data-div">
+                                  <button class="more-info-button" id="more-info-button">More info</button>
+                                  <p>id: ${props.airQualityData.current[i].id}</p>
+                                  <p>Country: ${props.airQualityData.current[i].country || 'N/A'}<p/>
+                                  <p>City: ${props.airQualityData.current[i].city || 'N/A'}<p/>
+                                  <p>Location: ${props.airQualityData.current[i].name || 'N/A'}<p/>
+                                  <p>Sensor Type: ${props.airQualityData.current[i].sensorType}<p/>
+                                  <p>Coordinates: ${props.airQualityData.current[i].coordinates?.longitude} - ${props.airQualityData.current[i].coordinates?.latitude}<p/>
+                                  <p>First Updated: ${props.airQualityData.current[i].firstUpdated}<p/>
+                                  <p>Last Updated: ${props.airQualityData.current[i].lastUpdated}<p/>
                                 </div>
-                            </div>`,
+                            </div>
+                            `
+                            ,
                         'icon': `${entityImage}`
                     }
                 },
@@ -112,10 +121,10 @@ const MapOfUsa = (props: any) => {
                 map.on("click", LayerID, (e: any) => {
                   if (e.features.length) {
                     // const feature = features[0];
-                    // Copy coordinates array.
+                    // Copy coordinates array.]
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const description = e.features[0].properties.description;
-  
+                    selectedLocationId.current = e.features[0].properties.id;
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
                     // over the copy being pointed to.
@@ -123,22 +132,26 @@ const MapOfUsa = (props: any) => {
                       coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                     }
 
-                    // // create popup node
-                    // const popupNode = document.createElement("div")
-                    // ReactDOM.render(
-                    //   <Popup
-                    //     feature={feature}
-                    //   />,
-                    //   popupNode
-                    // )
-
                     popupRef.current
                       .setLngLat(coordinates)
                       // .setDOMContent(description)
                       .setHTML(description)
                       .addTo(map)
                   }
-                
+
+                  const seeMoreButton = document.getElementById('more-info-button');
+                  console.log('seeMoreButton', seeMoreButton);
+                  let clickedSeeMoreButton = false;
+                  seeMoreButton?.addEventListener('click', (event) => {
+                    console.log('event', event);
+                    console.log('selectedLocationId.current', selectedLocationId.current);
+
+                    props.navigateToMeasurements(`/measurements/${Number(selectedLocationId.current)}`, {
+                      state: {
+                        id: Number(selectedLocationId.current),
+                      },
+                    });
+                  });
                 });
 
                 // Change the cursor to a pointer when the mouse is over the places layer.
@@ -150,17 +163,6 @@ const MapOfUsa = (props: any) => {
                 map.on('mouseleave', LayerID, () => {
                     map.getCanvas().style.cursor = '';
                 });
-
-                // map.on('mousemove', (e: any) => {
-                //   const infoElement: any = document.getElementById('info')
-                //   infoElement.innerHTML =
-                //         // `e.point` is the x, y coordinates of the `mousemove` event
-                //         // relative to the top-left corner of the map.
-                //         JSON.stringify(e.point) +
-                //         '<br />' +
-                //         // `e.lngLat` is the longitude, latitude geographical position of the event.
-                //         JSON.stringify(e.lngLat.wrap());
-                // });
               }
             }
     });
