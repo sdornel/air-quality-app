@@ -149,6 +149,8 @@ const MapOfUsa = (props: any) => {
                     props.navigateToMeasurements(`/measurements/${Number(selectedLocationId.current)}`, {
                       state: {
                         id: Number(selectedLocationId.current),
+                        // have the container act like an angular service
+                        // make fetch request for location data and send back here
                       },
                     });
                   });
