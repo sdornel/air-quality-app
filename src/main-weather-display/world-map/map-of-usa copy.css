@@ -1,4 +1,4 @@
-body {
+/* body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -6,14 +6,14 @@ body {
 }
 
 #map {
-    /* position: absolute;
+    position: absolute;
     top: 0;
     bottom: 0;
-    width: 100%; */
+    width: 100%;
 }
 
 #info {
-    /* display: block;
+    display: block;
     position: relative;
     margin: 0px auto;
     width: 50%;
@@ -23,12 +23,12 @@ body {
     font-size: 12px;
     text-align: center;
     color: #222;
-    background: #fff; */
+    background: #fff;
 }
 
 .map-container {
     height: 400px;
-    /* position: absolute; */
+    position: absolute;
 }
 
 .world-map {
@@ -164,4 +164,4 @@ body {
   @keyframes animatetop {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
-  }
+  } */
