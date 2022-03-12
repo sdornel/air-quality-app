@@ -22,7 +22,7 @@ const MapOfUsa = (props: any) => {
     const [lat, setLat] = useState(34);
     const [zoom, setZoom] = useState(1.5);
     const [map, setMap] = useState<mapboxgl.Map>({} as any);
-    const selectedLocationId = useRef(null);
+    const selectedLocationId = useRef(0);
     // Initialize map when component mounts
     useEffect(() => {
       const map: mapboxgl.Map = new mapboxgl.Map({
@@ -124,7 +124,7 @@ const MapOfUsa = (props: any) => {
                     // Copy coordinates array.]
                     const coordinates = e.features[0].geometry.coordinates.slice();
                     const description = e.features[0].properties.description;
-                    selectedLocationId.current = e.features[0].properties.id;
+                    selectedLocationId.current = Number(e.features[0].properties.id);
                     // Ensure that if the map is zoomed out such that multiple
                     // copies of the feature are visible, the popup appears
                     // over the copy being pointed to.
@@ -142,15 +142,11 @@ const MapOfUsa = (props: any) => {
                   const seeMoreButton = document.getElementById('more-info-button');
                   console.log('seeMoreButton', seeMoreButton);
                   let clickedSeeMoreButton = false;
-                  seeMoreButton?.addEventListener('click', (event) => {
-                    console.log('event', event);
-                    console.log('selectedLocationId.current', selectedLocationId.current);
-
+                  seeMoreButton?.addEventListener('click', async (event) => {
+                    const measurementData = await props.getMeasurementData(selectedLocationId.current);
                     props.navigateToMeasurements(`/measurements/${Number(selectedLocationId.current)}`, {
                       state: {
-                        id: Number(selectedLocationId.current),
-                        // have the container act like an angular service
-                        // make fetch request for location data and send back here
+                        measurementData
                       },
                     });
                   });

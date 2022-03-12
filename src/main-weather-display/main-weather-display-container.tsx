@@ -11,9 +11,7 @@ const MainWeatherDisplayContainer = () => {
   const [governmentButton, selectedGovernment] = useState(true);
   const [researchButton, selectedResearch] = useState(true);
 
-  // const measurementDataForLocation = useRef({});
-  // const [measurementDataForLocation, setMeasurementData] = useState({});
-  const measurementDataForLocation = useState({});
+  const measurementDataForLocation = useRef({});
   useEffect(() => {
     const fetchData = async () => {
       let cJson;
@@ -40,33 +38,20 @@ const MainWeatherDisplayContainer = () => {
     fetchData();
   }, [airQualityData.current]);
 
-
-  // useEffect(() => {
-
-  // }, [measurementDataForLocation.current])
-
   const getMeasurementData = async (locationId: number) => { 
-    console.log('CLICKED', locationId);
-    const getMeasurementDataForLocation = `https://docs.openaq.org/v2/measurements?date_from=2022-03-04T02%3A16%3A00%2B00%3A00&date_to=2022-03-05T02%3A16%3A00%2B00%3A00&limit=100&page=1&offset=0&sort=desc&radius=1000&country=US&location_id=${locationId}&order_by=datetime`
+    const getMeasurementDataForLocation = `https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&location_id=${locationId}&order_by=lastUpdated&dumpRaw=false`
     const res = await fetch(getMeasurementDataForLocation);
-    // const data = await res.json();
-    // console.log('res', res);
-    // measurementDataForLocation.current = await res.json();
-    // setMeasurementData(await res.json());
-    const measurementData = await res.json();
-    mData.current = measurementData;
+    const measurementData = res.json();
+    measurementDataForLocation.current = measurementData;
     return measurementData;
-    // const measurementDataForLocation = useState( () => getMeasurementData(locationId) );
   }
-
-  const mData = useRef({});
 
   let navigateToMeasurements = useNavigate(); 
 
   return (
     <div className="App">
       <h1>Main Weather Display</h1>
-      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} mData={mData} navigateToMeasurements={navigateToMeasurements} />
+      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} measurementDataForLocation={measurementDataForLocation} navigateToMeasurements={navigateToMeasurements} />
     </div>
   );
 }
