@@ -138,15 +138,12 @@ const MapOfUsa = (props: any) => {
                       .setHTML(description)
                       .addTo(map)
                   }
-
                   const seeMoreButton = document.getElementById('more-info-button');
-                  console.log('seeMoreButton', seeMoreButton);
-                  let clickedSeeMoreButton = false;
                   seeMoreButton?.addEventListener('click', async (event) => {
                     const measurementData = await props.getMeasurementData(selectedLocationId.current);
-                    props.navigateToMeasurements(`/measurements/${Number(selectedLocationId.current)}`, {
+                    props.navigate(`/measurements/${Number(selectedLocationId.current)}`, {
                       state: {
-                        measurementData
+                        measurementData,
                       },
                     });
                   });
