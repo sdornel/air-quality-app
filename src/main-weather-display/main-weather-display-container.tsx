@@ -46,12 +46,12 @@ const MainWeatherDisplayContainer = () => {
     return measurementData;
   }
 
-  let navigateToMeasurements = useNavigate(); 
+  let navigate = useNavigate(); 
 
   return (
     <div className="App">
       <h1>Main Weather Display</h1>
-      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} measurementDataForLocation={measurementDataForLocation} navigateToMeasurements={navigateToMeasurements} />
+      <MapOfUsa airQualityData={airQualityData} getMeasurementData={getMeasurementData} measurementDataForLocation={measurementDataForLocation} navigate={navigate} />
     </div>
   );
 }
