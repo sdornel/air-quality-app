@@ -1,5 +1,6 @@
 import { useLocation, Link } from "react-router-dom";
-import './location-measurements.css'
+import { LineChart, Line } from 'recharts';
+import './location-measurements.css';
 
 const LocationMeasurements = (props: any) => {
   const { state }: any = useLocation();
@@ -17,6 +18,15 @@ const LocationMeasurements = (props: any) => {
   //     measurementData
   //   },
 
+  const data = [{name: 'Page A', uv: 0.5, pv: 2400, amt: 2400}, {name: 'Page B', uv: 10, pv: 2400, amt: 2400}, {name: 'Page C', uv: 5, pv: 2400, amt: 2400}];
+
+  // const renderLineChart = (
+    // <LineChart width={400} height={400} data={data}>
+    //   <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+    // </LineChart>
+  // );
+
+
   return (
     <div className="location-measurements-div">
       <Link to="/"><button>Back</button></Link>
@@ -32,6 +42,9 @@ const LocationMeasurements = (props: any) => {
           </div>
         )
       })}
+      <LineChart width={400} height={400} data={data}>
+        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+      </LineChart>
     </div>
   )
 }
