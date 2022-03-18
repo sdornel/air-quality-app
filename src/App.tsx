@@ -6,7 +6,6 @@ import LocationMeasurements from './main-weather-display/location-measurements/l
 function App() {
   return (
     <div className="App">
-      <h1>App loads!</h1>
       <MainWeatherDisplayContainer/>
     </div>
   );

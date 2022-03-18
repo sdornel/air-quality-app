@@ -200,9 +200,7 @@ const MapOfUsa = (props: any) => {
         </div>
       </div>
       <div className='map-container' ref={mapContainerRef} />
-      <Checkboxes
-        toggleVisibility={toggleVisibility}
-      />
+      <Checkboxes toggleVisibility={toggleVisibility}/>
     </div>
   );
 };

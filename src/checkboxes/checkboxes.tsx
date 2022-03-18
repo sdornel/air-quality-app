@@ -1,7 +1,8 @@
-
+import './checkboxes.css';
 
 const Checkboxes = (props: any) => (
-    <div className="filter-checkboxes">
+    <div className="filter-checkboxes-div">
+        <h3>Legend</h3>
         <nav id="filter-group" className="filter-group">
         <input onChange={props.toggleVisibility} name="community" type="checkbox" id="poi-theatre" defaultChecked></input>
         <label htmlFor='poi-theatre'>Community</label>
