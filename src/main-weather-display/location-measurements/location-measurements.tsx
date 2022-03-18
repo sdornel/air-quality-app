@@ -5,6 +5,8 @@ import './location-measurements.css';
 const LocationMeasurements = (props: any) => {
   // TODO: put graph in middle. make it big
   // have more explanation on page with world map
+  // figure out the typing
+  // unit tests
   const { state }: any = useLocation();
 
   const data: any[] = [];
