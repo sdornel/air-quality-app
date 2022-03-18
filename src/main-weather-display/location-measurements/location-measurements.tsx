@@ -3,6 +3,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 import './location-measurements.css';
 
 const LocationMeasurements = (props: any) => {
+  // TODO: put graph in middle. make it big
   const { state }: any = useLocation();
 
   const data: any[] = [];
