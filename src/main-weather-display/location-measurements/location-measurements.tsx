@@ -4,6 +4,7 @@ import './location-measurements.css';
 
 const LocationMeasurements = (props: any) => {
   // TODO: put graph in middle. make it big
+  // have more explanation on page with world map
   const { state }: any = useLocation();
 
   const data: any[] = [];
