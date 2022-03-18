@@ -4,7 +4,6 @@ import './location-measurements.css';
 
 const LocationMeasurements = (props: any) => {
   const { state }: any = useLocation();
-  console.log(state);
 
   const data: any[] = [];
   state.measurementData.results[0].parameters.forEach((param: any) => {
