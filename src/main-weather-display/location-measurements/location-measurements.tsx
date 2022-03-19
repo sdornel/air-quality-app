@@ -9,7 +9,6 @@ const LocationMeasurements = (props: any) => {
   // figure out the typing
   // unit tests
   const { state }: any = useLocation();
-  console.log('state', state);
   const data1: any[] = [];
   const data2: any[] = [];
   state.measurementData.results[0].parameters.forEach((param: any) => {
