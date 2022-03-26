@@ -2,15 +2,15 @@ import { useLocation, Link } from "react-router-dom";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './location-measurements.css';
 
-const LocationMeasurements = (props: any) => {
+const LocationMeasurements = () => {
   // TODO:
   // have more explanation on page with world map
   // loading screen for when trying to view map
   // figure out the typing
   // unit tests
   const { state }: any = useLocation();
-  const data1: any[] = [];
-  const data2: any[] = [];
+  const data1: Array<{ name: string, uv: number, pv: number, amt: number }> = [];
+  const data2: Array<{ name: string, uv: number, pv: number, amt: number }> = [];
   state.measurementData.results[0].parameters.forEach((param: any) => {
     if (param.unit === 'µg/m³') {
       data1.push({ name: param.displayName, uv: param.average, pv: 2400, amt: 2400 })
