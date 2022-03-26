@@ -1,27 +1,23 @@
-import React, { useRef, useEffect, useState, ChangeEventHandler } from 'react';
+import React, { useRef, useEffect, useState, SetStateAction, Dispatch, MutableRefObject } from 'react';
 import './map-of-usa.css';
-import mapboxgl, { MapboxGeoJSONFeature } from 'mapbox-gl';
+import mapboxgl, { EventData, Popup } from 'mapbox-gl';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 import { Feature } from 'geojson';
-import Popup from '../location-measurements/location-measurements';
-import ReactDOM from 'react-dom';
 import { ChangeEvent } from 'react';
 import Checkboxes from '../../checkboxes/checkboxes';
 import { CheckboxButton } from '../../enum/enums';
-import LocationMeasurements from '../location-measurements/location-measurements';
-import { Link, Routes, Route, Router, BrowserRouter } from "react-router-dom";
-import App from '../../App';
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2Rvcm5lbCIsImEiOiJjbDBidTE5Z3YxMHE0M2NtbjN5ZzJkMDk1In0.kRcnZyDcmcDMs7DvPmXvGg';
 
 const MapOfUsa = (props: any) => {
-    const mapContainerRef = useRef<HTMLDivElement | null>(null);
-    const popupRef = useRef(new mapboxgl.Popup({ offset: 15 }));
+    const mapContainerRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement | null>(null);
+    const popupRef: MutableRefObject<Popup> = useRef(new mapboxgl.Popup({ offset: 15 }));
 
-    const [lng, setLng] = useState(5);
-    const [lat, setLat] = useState(34);
-    const [zoom, setZoom] = useState(1.5);
-    const [map, setMap] = useState<mapboxgl.Map>({} as any);
+    const [lng, setLng]: Array<number | Dispatch<SetStateAction<number>>> = useState(5);
+    const [lat, setLat]: Array<number | Dispatch<SetStateAction<number>>> = useState(34);
+    const [zoom, setZoom]: Array<number | Dispatch<SetStateAction<number>>> = useState(1.5);
+    // const [map, setMap] = useState<mapboxgl.Map>({} as any);
+    const [map, setMap] = useState<mapboxgl.Map>();
     const selectedLocationId = useRef(0);
     // Initialize map when component mounts
     useEffect(() => {
@@ -35,7 +31,7 @@ const MapOfUsa = (props: any) => {
       // Add navigation control (the +/- zoom buttons)
       map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-      map.on('load', () => {
+      map.on('load', (): void => {
         const features: Feature<Geometry, GeoJsonProperties>[] = []
         for (let i = 0; i < props.airQualityData.current.length; i++) {
             let entityImage;
@@ -100,8 +96,8 @@ const MapOfUsa = (props: any) => {
         });
 
         for (const feature of places.features) {
-          const symbol = feature.properties?.icon;
-          const LayerID = `poi-${symbol}`;
+          const symbol: string = feature.properties?.icon;
+          const LayerID: string = `poi-${symbol}`;
           // Add a layer for this symbol type if it hasn't been added already.
           if (!map.getLayer(LayerID)) {
               map.addLayer({
@@ -117,12 +113,9 @@ const MapOfUsa = (props: any) => {
                 
                 // When a click event occurs on a feature in the places layer, open a popup at the
                 // location of the feature, with description HTML from its properties.
-                // map.on("click", LayerID, (e: mapboxgl.MapboxGeoJSONFeature[]) => {
-                map.on("click", LayerID, (e: any) => {
+                map.on("click", LayerID, (e:  { features?: EventData; lngLat: EventData }) => {
                   if (e.features.length) {
-                    // const feature = features[0];
-                    // Copy coordinates array.]
-                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const coordinates = e.features[0].geometry.coordinates;
                     const description = e.features[0].properties.description;
                     selectedLocationId.current = Number(e.features[0].properties.id);
                     // Ensure that if the map is zoomed out such that multiple
@@ -134,12 +127,11 @@ const MapOfUsa = (props: any) => {
 
                     popupRef.current
                       .setLngLat(coordinates)
-                      // .setDOMContent(description)
                       .setHTML(description)
                       .addTo(map)
                   }
                   const seeMoreButton = document.getElementById('more-info-button');
-                  seeMoreButton?.addEventListener('click', async (event) => {
+                  seeMoreButton?.addEventListener('click', async (): Promise<void> => {
                     const measurementData = await props.getMeasurementData(selectedLocationId.current);
                     props.navigate(`/measurements/${Number(selectedLocationId.current)}`, {
                       state: {
@@ -150,19 +142,19 @@ const MapOfUsa = (props: any) => {
                 });
 
                 // Change the cursor to a pointer when the mouse is over the places layer.
-                map.on('mouseenter', LayerID, () => {
+                map.on('mouseenter', LayerID, (): void => {
                   map.getCanvas().style.cursor = 'pointer';
                 });
                 
                 // Change it back to a pointer when it leaves.
-                map.on('mouseleave', LayerID, () => {
+                map.on('mouseleave', LayerID, (): void => {
                     map.getCanvas().style.cursor = '';
                 });
               }
             }
     });
   
-      map.on('move', () => {
+      map.on('move', (): void => {
         setLng(Number(map.getCenter().lng.toFixed(4)));
         setLat(Number(map.getCenter().lat.toFixed(4)));
         setZoom(Number(map.getZoom().toFixed(2)));
@@ -172,7 +164,7 @@ const MapOfUsa = (props: any) => {
       return () => map.remove();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
-  const toggleVisibility = (event: ChangeEvent<HTMLInputElement>) => {
+  const toggleVisibility = (event: ChangeEvent<HTMLInputElement>): void => {
     let layerId: string = '';
     switch(event.target.name) {
       case CheckboxButton.Community:

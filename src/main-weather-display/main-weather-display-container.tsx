@@ -12,7 +12,7 @@ const MainWeatherDisplayContainer = () => {
   const [researchButton]: Array<boolean | Dispatch<SetStateAction<boolean>>> = useState(true);
 
   const measurementDataForLocation: MutableRefObject<{}> = useRef({});
-  useEffect(() => {
+  useEffect((): void => {
     const fetchData = async (): Promise<void> => {
       let cJson;
       let gJson;
