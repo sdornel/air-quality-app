@@ -6,7 +6,6 @@ const LocationMeasurements = () => {
   // TODO:
   // have more explanation on page with world map
   // loading screen for when trying to view map
-  // figure out the typing
   // unit tests
   const { state }: any = useLocation();
   const data1: Array<{ name: string, uv: number, pv: number, amt: number }> = [];
