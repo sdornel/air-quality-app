@@ -4,7 +4,6 @@ import './location-measurements.css';
 
 const LocationMeasurements = () => {
   // TODO:
-  // have more explanation on page with world map
   // loading screen for when trying to view map
   // unit tests
   const { state }: any = useLocation();
