@@ -36,7 +36,7 @@ const MainWeatherDisplayContainer = () => {
       airQualityData.current = [...results]
     }
     fetchData();
-  }, [airQualityData.current]);
+  }, [communityButton, governmentButton, researchButton]);
 
   const getMeasurementData = async (locationId: number) => { 
     const getMeasurementDataForLocation = `https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&location_id=${locationId}&order_by=lastUpdated&dumpRaw=false`
