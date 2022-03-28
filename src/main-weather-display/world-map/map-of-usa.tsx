@@ -16,7 +16,6 @@ const MapOfUsa = (props: any) => {
     const [lng, setLng]: Array<number | Dispatch<SetStateAction<number>>> = useState(5);
     const [lat, setLat]: Array<number | Dispatch<SetStateAction<number>>> = useState(34);
     const [zoom, setZoom]: Array<number | Dispatch<SetStateAction<number>>> = useState(1.5);
-    // const [map, setMap] = useState<mapboxgl.Map>({} as any);
     const [map, setMap] = useState<mapboxgl.Map>();
     const selectedLocationId = useRef(0);
     // Initialize map when component mounts
