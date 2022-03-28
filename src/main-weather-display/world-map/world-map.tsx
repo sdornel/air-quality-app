@@ -9,7 +9,7 @@ import { CheckboxButton } from '../../enum/enums';
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2Rvcm5lbCIsImEiOiJjbDBidTE5Z3YxMHE0M2NtbjN5ZzJkMDk1In0.kRcnZyDcmcDMs7DvPmXvGg';
 
-const MapOfUsa = (props: any) => {
+const WorldMap = (props: any) => {
     const mapContainerRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement | null>(null);
     const popupRef: MutableRefObject<Popup> = useRef(new mapboxgl.Popup({ offset: 15 }));
 
@@ -130,7 +130,8 @@ const MapOfUsa = (props: any) => {
                       .addTo(map)
                   }
                   const seeMoreButton = document.getElementById('more-info-button');
-                  seeMoreButton?.addEventListener('click', async (): Promise<void> => {
+                  seeMoreButton?.addEventListener('click', async () => {
+                    props.onLoad();
                     const measurementData = await props.getMeasurementData(selectedLocationId.current);
                     props.navigate(`/measurements/${Number(selectedLocationId.current)}`, {
                       state: {
@@ -196,4 +197,4 @@ const MapOfUsa = (props: any) => {
   );
 };
 
-export default MapOfUsa;
+export default WorldMap;
