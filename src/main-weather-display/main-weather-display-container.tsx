@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, Dispatch, SetStateAction, MutableRefObject } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import WorldMap from './world-map/world-map';
+import './main-weather-display.css';
 
 const MainWeatherDisplayContainer = () => {
   const fetchCommunityLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
@@ -46,24 +47,20 @@ const MainWeatherDisplayContainer = () => {
   let navigate = useNavigate();
 
   const onLoad = () => {
-    console.log('got here');
-    // debugger
-    // loading = true;
     setLoading(true);
   }
 
   if (loading) {
     return (
       <div>
-        <h1>
-          LOADING SCREEN
-        </h1>
+        <div className="location-data-loader"/>
+        <h3 className="loading-text">Loading... please wait...</h3>
       </div>
     )
   } else {
     return (
-      <div className="App">
-        <h1>Main Weather Display</h1>
+      <div className="main-weather-display-container-div">
+        <h1 className="main-air-quality-display-title">Main Air Quality Display</h1>
         <WorldMap airQualityData={airQualityData} getMeasurementData={getMeasurementData} measurementDataForLocation={measurementDataForLocation} navigate={navigate} onLoad={onLoad} />
       </div>
     );
