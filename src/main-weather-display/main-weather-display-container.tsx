@@ -54,7 +54,7 @@ const MainWeatherDisplayContainer = () => {
     return (
       <div>
         <div className="location-data-loader"/>
-        <h3 className="loading-text">Loading... please wait...</h3>
+        <h3 className="loading-text">Loading. Please wait.</h3>
       </div>
     )
   } else {
