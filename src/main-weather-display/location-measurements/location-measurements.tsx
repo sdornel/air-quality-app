@@ -4,7 +4,6 @@ import './location-measurements.css';
 
 const LocationMeasurements = () => {
   // TODO:
-  // loading screen for when trying to view map
   // unit tests
   const { state }: any = useLocation();
   const data1: Array<{ name: string, uv: number, pv: number, amt: number }> = [];
