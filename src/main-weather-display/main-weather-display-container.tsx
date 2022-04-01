@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, Dispatch, SetStateAction, MutableRefObject } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import WorldMap from './world-map/world-map';
 import './main-weather-display.css';
 
