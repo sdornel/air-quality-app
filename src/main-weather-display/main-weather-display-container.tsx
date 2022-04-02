@@ -12,29 +12,29 @@ const MainWeatherDisplayContainer = () => {
 
   const measurementDataForLocation: MutableRefObject<{}> = useRef({});
   useEffect((): void => {
-    const fetchData = async (): Promise<void> => {
-      let cJson;
-      let gJson;
-      let rJson;
-      const results = [];
-
-      const cData = await fetch(fetchCommunityLocationDataUrl);
-      cJson = await cData.json();
-      results.push(...cJson.results);
-
-      const gData = await fetch(fetchGovernmentLocationDataUrl);
-      gJson = await gData.json();
-      results.push(...gJson.results);
-
-      const rData = await fetch(fetchResearchLocationDataUrl);
-      rJson = await rData.json();
-      results.push(...rJson.results);
-
-      airQualityData.current = [...results]
-    }
     fetchData();
-
   }, []);
+
+  const fetchData = async (): Promise<void> => {
+    let cJson;
+    let gJson;
+    let rJson;
+    const results = [];
+
+    const cData = await fetch(fetchCommunityLocationDataUrl);
+    cJson = await cData.json();
+    results.push(...cJson.results);
+
+    const gData = await fetch(fetchGovernmentLocationDataUrl);
+    gJson = await gData.json();
+    results.push(...gJson.results);
+
+    const rData = await fetch(fetchResearchLocationDataUrl);
+    rJson = await rData.json();
+    results.push(...rJson.results);
+
+    airQualityData.current = [...results]
+  }
 
   const getMeasurementData = async (locationId: number) => { 
     const getMeasurementDataForLocation = `https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&location_id=${locationId}&order_by=lastUpdated&dumpRaw=false`
