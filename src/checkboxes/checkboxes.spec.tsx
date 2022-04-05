@@ -1,10 +1,11 @@
 import React from 'react'
 import shallow from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import Checkboxes from './checkboxes';
 
 describe('Checkboxes', () => {
+  beforeEach(cleanup)
   describe('community', () => {
     it('renders community text and input button', async () => {
       render(<Checkboxes />);

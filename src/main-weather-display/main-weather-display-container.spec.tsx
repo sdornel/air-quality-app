@@ -3,15 +3,17 @@ import { shallow, configure } from 'enzyme';
 import MainWeatherDisplayContainer from './main-weather-display-container';
 import Adapter from 'enzyme-adapter-react-16';
 import { BrowserRouter, useNavigate } from 'react-router-dom';
-import React, { useRef } from 'react';
+import * as React from 'react';
+import WorldMap from './world-map/world-map';
 
 configure({ adapter: new Adapter() });
 
 describe('MainWeatherDisplayContainer', () => {
 
-    beforeAll(() => {
+    beforeEach(() => {
         // jest.spyOn(React, "useEffect").getMockImplementation();
     });
+
     // const mockedUsedNavigate = jest.fn();
 
     // jest.mock('react-router-dom', () => ({
@@ -25,10 +27,9 @@ describe('MainWeatherDisplayContainer', () => {
     expect(shallow(component).length).toEqual(1);
   });
 
-  describe('fetchData()', () => {
-      // just check if function runs properly on component init
-    it('returns a promise of undefined', () => {
-        
+  describe('data loading', () => {
+    it('renders loading screen', async () => {
+
     });
   });
 });
