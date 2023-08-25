@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, Dispatch, SetStateAction, MutableRefObject
 import { useNavigate } from "react-router-dom";
 import WorldMap from './world-map/world-map';
 import './main-weather-display.css';
+import React from 'react';
 
 const MainWeatherDisplayContainer = () => {
   const fetchCommunityLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
