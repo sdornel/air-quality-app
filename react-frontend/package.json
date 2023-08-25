@@ -49,6 +49,8 @@
     "jest-watch-typeahead": "^0.6.5"
   },
   "jest": {
-    "coverageReporters": ["text-summary"]
+    "coverageReporters": [
+      "text-summary"
+    ]
   }
 }
