@@ -34,19 +34,22 @@ const WorldMap = (props: any) => {
         const features: Feature<Geometry, GeoJsonProperties>[] = []
         console.log('props.airQualityData.current', props.airQualityData.current);
         for (let i = 0; i < props.airQualityData.current.length; i++) {
-            let entityImage;
+            const entityImage = "museum";
             // eslint-disable-next-line default-case
-            switch(props.airQualityData.current[i].entity) {
-                case 'government':
-                    entityImage = 'museum';
-                    break;
-                case 'community':
-                    entityImage = 'theatre';
-                    break;
-                case 'research':
-                    entityImage = 'rocket';
-                    break;
-            }
+
+            // leaving the below commented out code. the image/icon should be derived from the entity propery. Currently it seems like the API response is getting null for this so we are just manually setting it to be "museum" for all of them. this is a temporart fix until we are able to resolve the issues with the API response. 
+
+            // switch(props.airQualityData.current[i].entity) {
+            //     case 'government':
+            //         entityImage = 'museum';
+            //         break;
+            //     case 'community':
+            //         entityImage = 'theatre';
+            //         break;
+            //     case 'research':
+            //         entityImage = 'rocket';
+            //         break;
+            // }
             features.push(
                 {
                     'type': 'Feature',
@@ -70,7 +73,7 @@ const WorldMap = (props: any) => {
                                   <p>Country: ${props.airQualityData.current[i].country || 'N/A'}<p/>
                                   <p>City: ${props.airQualityData.current[i].city || 'N/A'}<p/>
                                   <p>Location: ${props.airQualityData.current[i].name || 'N/A'}<p/>
-                                  <p>Sensor Type: ${props.airQualityData.current[i].sensorType}<p/>
+                                  <p>Sensor Type: ${props.airQualityData.current[i].manufacturers[0].modelName}<p/>
                                   <p>Coordinates: ${props.airQualityData.current[i].coordinates?.longitude} - ${props.airQualityData.current[i].coordinates?.latitude}<p/>
                                   <p>First Updated: ${props.airQualityData.current[i].firstUpdated}<p/>
                                   <p>Last Updated: ${props.airQualityData.current[i].lastUpdated}<p/>

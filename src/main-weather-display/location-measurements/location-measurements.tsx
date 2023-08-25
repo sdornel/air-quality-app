@@ -1,6 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import './location-measurements.css';
+import React from "react";
 
 const LocationMeasurements = () => {
   // TODO:

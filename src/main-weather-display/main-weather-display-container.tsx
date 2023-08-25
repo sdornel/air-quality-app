@@ -5,7 +5,9 @@ import './main-weather-display.css';
 import React from 'react';
 
 const MainWeatherDisplayContainer = () => {
-  const fetchCommunityLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
+  //seems that this url is possibly incorrect? need to get valid response here but is causing console errors. possibly due to general breakage at the API level or due to improper implementation? (entity=community might be the wrong thing?)
+
+  // const fetchCommunityLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
   const fetchGovernmentLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=government&dumpRaw=false';
   const fetchResearchLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=research&dumpRaw=false';
   const airQualityData: MutableRefObject<{}> = useRef({});
@@ -22,10 +24,12 @@ const MainWeatherDisplayContainer = () => {
     let rJson;
     const results = [];
 
-    const cData = await fetch(fetchCommunityLocationDataUrl);
-    console.log('cData', cData);
-    cJson = await cData.json();
-    results.push(...cJson.results);
+    //commented this out due to previously mentioned issue. we are removing all reference to the community location data for now until API issue can be resolved. 
+    
+    // const cData = await fetch(fetchCommunityLocationDataUrl);
+    // console.log('cData', cData);
+    // cJson = await cData.json();
+    // results.push(...cJson.results);
 
     const gData = await fetch(fetchGovernmentLocationDataUrl);
     gJson = await gData.json();

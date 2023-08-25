@@ -1,4 +1,5 @@
 import './checkboxes.css';
+import React from 'react';
 
 const Checkboxes = (props: any) => (
     <div className="filter-checkboxes-div" data-testid="filter-checkboxes-div">

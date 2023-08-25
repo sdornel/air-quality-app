@@ -3,6 +3,7 @@ import App from './App';
 import { shallow, configure } from 'enzyme';
 import MainWeatherDisplayContainer from './main-weather-display/main-weather-display-container';
 import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
 
 configure({ adapter: new Adapter() });
 
