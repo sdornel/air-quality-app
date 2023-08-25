@@ -32,6 +32,7 @@ const WorldMap = (props: any) => {
 
       map.on('load', (): void => {
         const features: Feature<Geometry, GeoJsonProperties>[] = []
+        console.log('props.airQualityData.current', props.airQualityData.current);
         for (let i = 0; i < props.airQualityData.current.length; i++) {
             let entityImage;
             // eslint-disable-next-line default-case

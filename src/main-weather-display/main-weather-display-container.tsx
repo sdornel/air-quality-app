@@ -5,9 +5,9 @@ import './main-weather-display.css';
 import React from 'react';
 
 const MainWeatherDisplayContainer = () => {
-  const fetchCommunityLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
-  const fetchGovernmentLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=government&dumpRaw=false';
-  const fetchResearchLocationDataUrl = 'https://docs.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=research&dumpRaw=false';
+  const fetchCommunityLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=community&dumpRaw=false';
+  const fetchGovernmentLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=government&dumpRaw=false';
+  const fetchResearchLocationDataUrl = 'https://api.openaq.org/v2/locations?limit=500&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&entity=research&dumpRaw=false';
   const airQualityData: MutableRefObject<{}> = useRef({});
   const [loading, setLoading]: Array<boolean | Dispatch<SetStateAction<boolean>>> = useState(false);
 
@@ -23,6 +23,7 @@ const MainWeatherDisplayContainer = () => {
     const results = [];
 
     const cData = await fetch(fetchCommunityLocationDataUrl);
+    console.log('cData', cData);
     cJson = await cData.json();
     results.push(...cJson.results);
 
@@ -38,9 +39,11 @@ const MainWeatherDisplayContainer = () => {
   }
 
   const getMeasurementData = async (locationId: number) => { 
-    const getMeasurementDataForLocation = `https://docs.openaq.org/v2/locations?limit=100&page=1&offset=0&sort=desc&radius=1000&location_id=${locationId}&order_by=lastUpdated&dumpRaw=false`
+    const getMeasurementDataForLocation = `https://api.openaq.org/v2/locations/${locationId}?limit=100&page=1&offset=0&sort=desc&radius=1000&order_by=lastUpdated&dumpRaw=false`;
     const res = await fetch(getMeasurementDataForLocation);
+    console.log('res', res);
     const measurementData = res.json();
+    console.log('measurementData', measurementData);
     measurementDataForLocation.current = measurementData;
     return measurementData;
   }
