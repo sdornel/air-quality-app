@@ -1,0 +1,21 @@
+{
+    "development": {
+      "database": "customer_db_dev",
+      "dialect": "postgres"
+    },
+    "test": {
+      "database": "customer_db_test",
+      "dialect": "postgres"
+    },
+    "production": {
+      "use_env_variable": "DATABASE_URL",
+      "dialect": "postgres",
+      "dialectOptions": {
+        "ssl": {
+          "rejectUnauthorized": false,
+          "ssl": true
+        }
+      }
+    },
+    "secret": "abc"
+  }
