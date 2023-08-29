@@ -21,6 +21,6 @@ npx sequelize-cli db:migrate:undo
 4) Revert back to the initial state by undoing all migrations
 db:migrate:undo:all
 
-7) You can revert back to a specific migration by passing its name with the --to option.
+5) You can revert back to a specific migration by passing its name with the --to option.
 npx sequelize-cli db:migrate:undo:all --to sample-migration-file.js
 ```
