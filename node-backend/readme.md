@@ -8,8 +8,8 @@ You will need to set up a database for this. Here is one way of setting up a dat
 
 
 useful commands for sequelize https://sequelize.org/docs/v6/other-topics/migrations/
-1) To create migration and data model
 ```bash
+1) To create migration and data model
 npx sequelize-cli model:generate --name CustomerData --attributes placeHolder:string
 
 2) Run migrations
