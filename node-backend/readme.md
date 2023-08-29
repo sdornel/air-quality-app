@@ -4,7 +4,8 @@ You will need to set up a database for this. Here is one way of setting up a dat
 
 1) open a terminal and type "psql -U postgres". this ensures you open psql terminal with postgres user
 2) run ```bash CREATE DATABASE customer_db_dev ```
-3) run migrations with ```bash npx sequelize-cli db:migrate ```
+3) type ```bash \q```
+4) run migrations with ```bash npx sequelize-cli db:migrate ```
 
 
 useful commands for sequelize https://sequelize.org/docs/v6/other-topics/migrations/
